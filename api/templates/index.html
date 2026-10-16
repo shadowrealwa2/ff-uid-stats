@@ -131,7 +131,7 @@ body::after{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;back
 <div class="ftr">SHADOW <b>//</b> FF STATS v2.1</div>
 </div>
 <script>
-function brRank(p){p=+p||0};
+function brRank(p){p=+p||0;
 if(p<1300)return{n:'BRONZE',nx:'SILVER I',a:0,b:1300};
 if(p<1400)return{n:'SILVER I',nx:'SILVER II',a:1300,b:1400};
 if(p<1500)return{n:'SILVER II',nx:'SILVER III',a:1400,b:1500};
@@ -160,7 +160,7 @@ if(p<7999)return{n:'MASTER',nx:'ELITE MASTER',a:7099,b:7999};
 if(p<8999)return{n:'ELITE MASTER',nx:'GRANDMASTER',a:7999,b:8999};
 if(p<9999)return{n:'ELITE MASTER',nx:'GRANDMASTER',a:8999,b:9999};
 return{n:'GRANDMASTER',nx:'MAX',a:9999,b:9999};}
-function csRank(s){s=+s||0};
+function csRank(s){s=+s||0;
 if(s<=3)return{n:'BRONZE 1',st:s,of:3};if(s<=6)return{n:'BRONZE 2',st:s-3,of:3};if(s<=9)return{n:'BRONZE 3',st:s-6,of:3};
 if(s<=13)return{n:'SILVER 1',st:s-9,of:4};if(s<=17)return{n:'SILVER 2',st:s-13,of:4};if(s<=21)return{n:'SILVER 3',st:s-17,of:4};
 if(s<=25)return{n:'GOLD 1',st:s-21,of:4};if(s<=29)return{n:'GOLD 2',st:s-25,of:4};if(s<=33)return{n:'GOLD 3',st:s-29,of:4};if(s<=37)return{n:'GOLD 4',st:s-33,of:4};
