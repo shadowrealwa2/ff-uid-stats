@@ -7,10 +7,11 @@ import time
 app = Flask(__name__, template_folder="api/templates")
 
 WZ_API = "https://wzapi.vercel.app/get"
+# Auto server detect order — PK first (his audience), then others
 SERVERS = ["pk", "sg", "ind", "bd", "br", "vn", "th", "me", "tw", "us", "id", "ru", "cis", "na"]
 
 _cache = {}
-CACHE_TTL = 300
+CACHE_TTL = 300  # 5 min
 
 
 def wz_fetch(uid, server):
@@ -22,6 +23,7 @@ def wz_fetch(uid, server):
         with urllib.request.urlopen(req, timeout=18) as r:
             data = json.loads(r.read().decode())
         bi = data.get("basic_info") or {}
+        # valid player = has nickname
         if bi.get("nickname"):
             return data
         return None
@@ -30,7 +32,7 @@ def wz_fetch(uid, server):
 
 
 def normalize(data, detected_server):
-    bi = data.get("basic_info", {})
+    bi = data.get("basic_info", {}) or {}
     clan = data.get("clan_basic_info", {}) or {}
     social = data.get("social_info", {}) or {}
     return {
@@ -43,9 +45,11 @@ def normalize(data, detected_server):
         "likes": bi.get("liked", 0),
         "region": bi.get("region", detected_server.upper()),
         "br_rank": bi.get("rank", 0),
+        "br_rank_sort": bi.get("rank_sort", 0),
         "br_points": bi.get("ranking_points", 0),
         "br_max_rank": bi.get("max_rank", 0),
         "cs_rank": bi.get("cs_rank", 0),
+        "cs_rank_sort": bi.get("cs_rank_sort", 0),
         "cs_points": bi.get("cs_ranking_points", 0),
         "cs_max_rank": bi.get("cs_max_rank", 0),
         "clan_name": clan.get("clan_name", "") or bi.get("clan_name", ""),
