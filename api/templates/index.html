@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>SHADOW FF STATS — Free Fire UID Lookup</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+:root{--purple:#a855f7;--violet:#7c3aed;--gold:#ffd54a;--bg:#050508}
+body{background:var(--bg);color:#fff;font-family:'Segoe UI',system-ui,sans-serif;min-height:100vh;overflow-x:hidden}
+#bg3d{position:fixed;inset:0;z-index:0;pointer-events:none}
+.wrap{position:relative;z-index:1;max-width:480px;margin:0 auto;padding:20px 16px 60px}
+.hero{text-align:center;padding:34px 0 8px;animation:drop .8s ease}
+@keyframes drop{from{opacity:0;transform:translateY(-30px)}to{opacity:1;transform:none}}
+.logo{font-size:15px;letter-spacing:8px;color:var(--purple);font-weight:700}
+.hero h1{font-size:44px;font-weight:900;letter-spacing:2px;background:linear-gradient(135deg,#fff,#a855f7,#ffd54a);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 0 25px rgba(168,85,247,.55));margin:6px 0}
+.hero p{color:#8b8b9e;font-size:13px;letter-spacing:1px}
+.search{margin:26px 0;background:rgba(255,255,255,.04);border:1px solid rgba(168,85,247,.35);border-radius:20px;padding:18px;backdrop-filter:blur(12px);box-shadow:0 0 40px rgba(124,58,237,.15)}
+.search label{font-size:11px;letter-spacing:3px;color:#8b8b9e;display:block;margin-bottom:10px}
+.inrow{display:flex;gap:10px}
+#uid{flex:1;background:rgba(0,0,0,.5);border:1px solid rgba(168,85,247,.4);border-radius:14px;color:#fff;font-size:20px;font-weight:700;letter-spacing:2px;padding:14px;text-align:center;outline:none;transition:.3s}
+#uid:focus{border-color:var(--purple);box-shadow:0 0 20px rgba(168,85,247,.4)}
+#scan{background:linear-gradient(135deg,#7c3aed,#a855f7);border:none;border-radius:14px;color:#fff;font-weight:900;font-size:15px;letter-spacing:2px;padding:0 26px;cursor:pointer;box-shadow:0 4px 25px rgba(124,58,237,.5);transition:.2s}
+#scan:active{transform:scale(.95)}
+.hint{text-align:center;font-size:11px;color:#55556a;margin-top:12px}
+#scanner{display:none;text-align:center;padding:30px 0}
+.radar{width:130px;height:130px;margin:0 auto;border-radius:50%;border:2px solid rgba(168,85,247,.3);position:relative;overflow:hidden;background:radial-gradient(circle,rgba(124,58,237,.15),transparent)}
+.radar::before{content:'';position:absolute;inset:0;border-radius:50%;background:conic-gradient(from 0deg,rgba(168,85,247,.9),transparent 25%);animation:spin 1.2s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.radar::after{content:'🎯';position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:38px}
+#scanmsg{margin-top:16px;font-size:14px;color:var(--purple);letter-spacing:2px;font-weight:600;min-height:22px}
+#result{display:none;perspective:1200px;margin-top:10px}
+.card3d{transform-style:preserve-3d;transition:transform .15s ease-out;position:relative;border-radius:24px;background:linear-gradient(160deg,rgba(30,20,50,.92),rgba(10,8,20,.95));border:1px solid rgba(168,85,247,.45);box-shadow:0 20px 60px rgba(124,58,237,.35),inset 0 1px 0 rgba(255,255,255,.1);overflow:hidden;animation:cardin .7s cubic-bezier(.2,1.4,.4,1)}
+@keyframes cardin{from{opacity:0;transform:translateY(40px) scale(.92)}to{opacity:1;transform:none}}
+.card3d::before{content:'';position:absolute;inset:0;background:linear-gradient(115deg,transparent 30%,rgba(255,255,255,.09) 45%,transparent 60%);transform:translateX(-100%);animation:shine 3.5s ease-in-out infinite;pointer-events:none;z-index:5}
+@keyframes shine{0%,60%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
+.banner{height:110px;background:linear-gradient(135deg,#2a1650,#7c3aed,#2a1650);background-size:200% 200%;animation:bflow 6s ease infinite;position:relative;overflow:hidden}
+@keyframes bflow{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+.banner::after{content:'⚔️🔥⚔️';position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:44px;opacity:.35;filter:grayscale(.3)}
+.prow{display:flex;align-items:center;gap:14px;padding:0 18px;margin-top:-34px;position:relative;z-index:2}
+.avatar{width:78px;height:78px;border-radius:50%;background:conic-gradient(#7c3aed,#ffd54a,#a855f7,#7c3aed);padding:3px;animation:spinring 4s linear infinite;flex-shrink:0}
+@keyframes spinring{to{filter:hue-rotate(360deg)}}
+.avatar>div{width:100%;height:100%;border-radius:50%;background:#0d0a18;display:flex;align-items:center;justify-content:center;font-size:34px}
+.pinfo{flex:1;min-width:0}
+.pname{font-size:21px;font-weight:900;text-shadow:0 0 18px rgba(168,85,247,.8);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.puid{font-size:12px;color:#8b8b9e;letter-spacing:1px;margin-top:2px}
+.badges{display:flex;gap:8px;padding:14px 18px 4px;flex-wrap:wrap}
+.bdg{font-size:11px;font-weight:800;letter-spacing:1px;padding:7px 13px;border-radius:20px;background:rgba(168,85,247,.14);border:1px solid rgba(168,85,247,.5);color:#d8b4fe}
+.bdg.gold{background:rgba(255,213,74,.12);border-color:rgba(255,213,74,.5);color:var(--gold)}
+.ranks{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:14px 18px}
+.rankbox{border-radius:18px;padding:16px 12px;text-align:center;position:relative;overflow:hidden;animation:pop .5s cubic-bezier(.2,1.6,.4,1) backwards}
+.rankbox:nth-child(2){animation-delay:.12s}
+@keyframes pop{from{opacity:0;transform:scale(.7)}to{opacity:1;transform:scale(1)}}
+.rankbox .rt{font-size:10px;letter-spacing:3px;color:#cbb;opacity:.85}
+.rankbox .rv{font-size:22px;font-weight:900;margin:6px 0 2px}
+.rankbox .rp{font-size:12px;opacity:.8}
+.r-br{background:linear-gradient(135deg,rgba(255,82,82,.18),rgba(120,20,40,.25));border:1px solid rgba(255,82,82,.5);box-shadow:0 0 25px rgba(255,82,82,.25)}
+.r-br .rv{color:#ff8a80;text-shadow:0 0 15px rgba(255,82,82,.7)}
+.r-cs{background:linear-gradient(135deg,rgba(179,136,255,.16),rgba(60,20,120,.25));border:1px solid rgba(179,136,255,.5);box-shadow:0 0 25px rgba(179,136,255,.25)}
+.r-cs .rv{color:#d1b3ff;text-shadow:0 0 15px rgba(179,136,255,.7)}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding:6px 18px 18px}
+.stat{background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:13px 6px;text-align:center;animation:pop .5s cubic-bezier(.2,1.6,.4,1) backwards}
+.stat:nth-child(2){animation-delay:.08s}.stat:nth-child(3){animation-delay:.16s}
+.stat:nth-child(4){animation-delay:.24s}.stat:nth-child(5){animation-delay:.32s}.stat:nth-child(6){animation-delay:.4s}
+.stat .sv{font-size:19px;font-weight:900;color:#fff}
+.stat .sv.g{color:var(--gold)}.stat .sv.p{color:#d8b4fe}
+.stat .sl{font-size:9px;letter-spacing:2px;color:#8b8b9e;margin-top:5px}
+.clan{margin:0 18px 14px;border-radius:16px;padding:14px 16px;background:linear-gradient(135deg,rgba(255,213,74,.08),rgba(124,58,237,.08));border:1px solid rgba(255,213,74,.3);display:flex;align-items:center;gap:12px}
+.clan .ci{font-size:30px}
+.clan .cn{font-weight:800;font-size:15px}
+.clan .cm{font-size:11px;color:#8b8b9e;margin-top:2px}
+.meta{margin:0 18px 20px;font-size:11px;color:#6a6a80;display:flex;justify-content:space-between}
+#error{display:none;text-align:center;padding:26px;background:rgba(255,60,60,.07);border:1px solid rgba(255,60,60,.35);border-radius:18px;margin-top:14px;font-size:14px;color:#ff9d9d}
+.footer{text-align:center;margin-top:34px;font-size:11px;color:#44445a;letter-spacing:3px}
+.footer b{color:var(--purple)}
+</style>
+</head>
+<body>
+<canvas id="bg3d"></canvas>
+<div class="wrap">
+<div class="hero"><div class="logo">SHADOW</div><h1>FF STATS</h1><p>FREE FIRE UID LOOKUP • 3D PROFILE CARD</p></div>
+<div class="search"><label>ENTER PLAYER UID</label><div class="inrow"><input id="uid" inputmode="numeric" placeholder="2513698016" maxlength="12"><button id="scan">SCAN</button></div><div class="hint">🌍 Server auto-detect hoga — kuch select karne ki zaroorat nahi!</div></div>
+<div id="scanner"><div class="radar"></div><div id="scanmsg">SCANNING...</div></div>
+<div id="error"></div>
+<div id="result"><div class="card3d" id="card3d">
+<div class="banner"></div>
+<div class="prow"><div class="avatar"><div>🎮</div></div><div class="pinfo"><div class="pname" id="pname">—</div><div class="puid" id="puid">UID: —</div></div></div>
+<div class="badges"><span class="bdg gold" id="blevel">LVL —</span><span class="bdg" id="bregion">🌍 —</span><span class="bdg" id="bserver">⚡ —</span></div>
+<div class="ranks"><div class="rankbox r-br"><div class="rt">BATTLE ROYALE</div><div class="rv" id="brrank">—</div><div class="rp" id="brpts">— pts</div></div><div class="rankbox r-cs"><div class="rt">CLASH SQUAD</div><div class="rv" id="csrank">—</div><div class="rp" id="cspts">— pts</div></div></div>
+<div class="stats"><div class="stat"><div class="sv g" id="slikes">0</div><div class="sl">LIKES</div></div><div class="stat"><div class="sv p" id="slevel">0</div><div class="sl">LEVEL</div></div><div class="stat"><div class="sv" id="sbadges">0</div><div class="sl">BADGES</div></div><div class="stat"><div class="sv g" id="sbrmax">—</div><div class="sl">BR PEAK</div></div><div class="stat"><div class="sv p" id="scsmax">—</div><div class="sl">CS PEAK</div></div><div class="stat"><div class="sv" id="sgender">—</div><div class="sl">GENDER</div></div></div>
+<div class="clan" id="clanbox"><div class="ci">🛡️</div><div><div class="cn" id="clanname">No Clan</div><div class="cm" id="clanmeta">—</div></div></div>
+<div class="meta"><span id="mcreated">—</span><span id="mlogin">—</span></div>
+</div></div>
+<div class="footer">MADE BY <b>SHADOW</b> • FF STATS v1.0</div>
+</div>
+<script>
+(function(){const c=document.getElementById('bg3d'),r=new THREE.WebGLRenderer({canvas:c,alpha:true});r.setSize(innerWidth,innerHeight);const s=new THREE.Scene(),cam=new THREE.PerspectiveCamera(60,innerWidth/innerHeight,.1,100);cam.position.z=8;const g=new THREE.BufferGeometry(),n=350,pos=new Float32Array(n*3),col=new Float32Array(n*3);const palette=[[0.66,0.33,0.97],[0.49,0.23,0.93],[1,0.83,0.29],[1,0.4,0.5]];for(let i=0;i<n;i++){pos[i*3]=(Math.random()-.5)*22;pos[i*3+1]=(Math.random()-.5)*22;pos[i*3+2]=(Math.random()-.5)*10;const p=palette[Math.floor(Math.random()*palette.length)];col[i*3]=p[0];col[i*3+1]=p[1];col[i*3+2]=p[2];}g.setAttribute('position',new THREE.BufferAttribute(pos,3));g.setAttribute('color',new THREE.BufferAttribute(col,3));s.add(new THREE.Points(g,new THREE.PointsMaterial({size:.09,vertexColors:true,transparent:true,opacity:.85})));(function anim(){requestAnimationFrame(anim);s.rotation.y+=.0009;s.rotation.x+=.0004;r.render(s,cam);})();addEventListener('resize',()=>{r.setSize(innerWidth,innerHeight);cam.aspect=innerWidth/innerHeight;cam.updateProjectionMatrix();});})();
+const card=document.getElementById('card3d');
+document.addEventListener('mousemove',e=>{if(!card.offsetParent)return;const r=card.getBoundingClientRect(),x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;card.style.transform='rotateY('+(x*14)+'deg) rotateX('+(-y*14)+'deg)';});
+document.addEventListener('mouseleave',()=>card.style.transform='rotateY(0) rotateX(0)');
+let tx0=0,ty0=0;
+document.addEventListener('touchstart',e=>{tx0=e.touches[0].clientX;ty0=e.touches[0].clientY;},{passive:true});
+document.addEventListener('touchmove',e=>{if(!card.offsetParent)return;const dx=(e.touches[0].clientX-tx0)/40,dy=(e.touches[0].clientY-ty0)/40;card.style.transform='rotateY('+Math.max(-14,Math.min(14,dx))+'deg) rotateX('+Math.max(-14,Math.min(14,-dy))+'deg)';},{passive:true});
+document.addEventListener('touchend',()=>card.style.transform='rotateY(0) rotateX(0)');
+function rankName(id){if(id>=321)return'GRANDMASTER';if(id>=317)return'HEROIC';if(id>=313)return'DIAMOND '+['I','II','III','IV'][id-313];if(id>=309)return'PLATINUM '+['I','II','III','IV'][id-309];if(id>=306)return'GOLD '+['I','II','III'][id-306];if(id>=303)return'SILVER '+['I','II','III'][id-303];if(id>=300)return'BRONZE '+['I','II','III'][id-300];return'UNRANKED';}
+function countUp(el,to,dur){dur=dur||1200;const t0=performance.now();(function f(t){const p=Math.min(1,(t-t0)/dur),v=Math.floor(to*(1-Math.pow(1-p,3)));el.textContent=v.toLocaleString();if(p<1)requestAnimationFrame(f);})(t0);}
+function fmtDate(ts){if(!ts)return'—';const d=new Date(ts*1000);return d.toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'});}
+const uidEl=document.getElementById('uid'),scanBtn=document.getElementById('scan');
+const scanner=document.getElementById('scanner'),scanmsg=document.getElementById('scanmsg');
+const result=document.getElementById('result'),errBox=document.getElementById('error');
+const servers=['pk','sg','ind','bd','br','vn','th','me','tw','us','id','ru'];
+async function doScan(){const uid=uidEl.value.trim();errBox.style.display='none';result.style.display='none';if(!/^\d{5,12}$/.test(uid)){errBox.style.display='block';errBox.textContent='⚠️ Sahi UID daalo bhadwe! (sirf numbers)';return;}scanner.style.display='block';let si=0;const cyc=setInterval(()=>{scanmsg.textContent='SCANNING SERVER: '+servers[si%servers.length].toUpperCase()+'...';si++;},260);try{const r=await fetch('/api/player?uid='+uid);clearInterval(cyc);const d=await r.json();scanner.style.display='none';if(!d.success){errBox.style.display='block';errBox.textContent=d.error==='NOT_FOUND'?'❌ Ye UID kisi server pe nahi mila!':'⚠️ Kuch garbar hui, dobara try karo!';return;}document.getElementById('pname').textContent=d.nickname;document.getElementById('puid').textContent='UID: '+d.uid;document.getElementById('blevel').textContent='⭐ LVL '+d.level;document.getElementById('bregion').textContent='🌍 '+(d.region||'?');document.getElementById('bserver').textContent='⚡ '+d.server.toUpperCase()+' SERVER';document.getElementById('brrank').textContent=rankName(d.br_rank);document.getElementById('brpts').textContent=(d.br_points||0).toLocaleString()+' pts';document.getElementById('csrank').textContent=rankName(d.cs_rank);document.getElementById('cspts').textContent=(d.cs_points||0).toLocaleString()+' pts';countUp(document.getElementById('slikes'),d.likes);countUp(document.getElementById('slevel'),d.level,800);countUp(document.getElementById('sbadges'),d.badge_count,800);document.getElementById('sbrmax').textContent=rankName(d.br_max_rank).split(' ')[0];document.getElementById('scsmax').textContent=rankName(d.cs_max_rank).split(' ')[0];document.getElementById('sgender').textContent=d.gender||'—';if(d.clan_name){document.getElementById('clanname').textContent=d.clan_name;document.getElementById('clanmeta').textContent='LVL '+d.clan_level+' • '+d.clan_members+'/'+d.clan_capacity+' members';}else{document.getElementById('clanname').textContent='No Clan';document.getElementById('clanmeta').textContent='—';}document.getElementById('mcreated').textContent='📅 Joined: '+fmtDate(d.created_at);document.getElementById('mlogin').textContent='🕐 Active: '+fmtDate(d.last_login);result.style.display='block';result.scrollIntoView({behavior:'smooth',block:'nearest'});}catch(e){clearInterval(cyc);scanner.style.display='none';errBox.style.display='block';errBox.textContent='⚠️ Network error — dobara try karo!';}}
+scanBtn.onclick=doScan;
+uidEl.addEventListener('keydown',e=>{if(e.key==='Enter')doScan();});
+</script>
+</body>
+</html>
