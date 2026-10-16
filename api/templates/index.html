@@ -6,19 +6,19 @@
 <title>SHADOW // FF STATS — Combat Profile Lookup</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-:root{--org:#ff6b1a;--cyn:#00e5ff;--bg:#070708;--panel:#0d0d10;--line:#1e1e24;--txt:#e8e8ec;--dim:#8a8a96}
+:root{--org:#ff6b1a;--cyn:#00e5ff;--bg:#070708;--line:#1e1e24;--txt:#e8e8ec;--dim:#8a8a96}
 html,body{overflow-x:hidden;overflow-x:clip}
 body{background:var(--bg);color:var(--txt);font-family:'Segoe UI',system-ui,-apple-system,sans-serif;min-height:100vh}
 body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:linear-gradient(rgba(255,107,26,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,107,26,.035) 1px,transparent 1px);background-size:44px 44px;mask-image:radial-gradient(ellipse 90% 70% at 50% 0%,#000 30%,transparent 100%)}
 body::after{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(ellipse 80% 50% at 50% -10%,rgba(255,107,26,.09),transparent 60%)}
 .wrap{position:relative;z-index:1;max-width:520px;width:100%;margin:0 auto;padding:0 14px 50px;overflow:hidden}
-.hdr{display:flex;align-items:stretch;gap:0;margin:0 -14px;position:relative;min-height:210px;overflow:hidden;border-bottom:1px solid var(--line)}
-.hdr .txt{flex:1;padding:30px 0 24px 18px;display:flex;flex-direction:column;justify-content:center;z-index:2}
+.hdr{display:flex;align-items:stretch;margin:0 -14px;position:relative;min-height:200px;overflow:hidden;border-bottom:1px solid var(--line)}
+.hdr .txt{flex:1;padding:28px 0 22px 18px;display:flex;flex-direction:column;justify-content:center;z-index:2}
 .kicker{font-size:10px;letter-spacing:5px;color:var(--org);font-weight:800}
 .hdr h1{font-size:40px;font-weight:900;letter-spacing:1px;line-height:1.05;margin:8px 0 4px}
 .hdr h1 span{color:var(--org)}
 .hdr .sub{font-size:11px;letter-spacing:2px;color:var(--dim)}
-.hdr .soldier{width:46%;position:relative;z-index:1}
+.hdr .soldier{width:44%;position:relative;z-index:1}
 .hdr .soldier img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top center;mask-image:linear-gradient(90deg,transparent,#000 35%);-webkit-mask-image:linear-gradient(90deg,transparent,#000 35%)}
 .hdr::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 55%,var(--bg));z-index:1;pointer-events:none}
 .cut{clip-path:polygon(14px 0,100% 0,100% calc(100% - 14px),calc(100% - 14px) 100%,0 100%,0 14px)}
@@ -38,48 +38,39 @@ body::after{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;back
 @keyframes scanmove{from{left:-40%}to{left:100%}}
 #scanmsg{margin-top:14px;font-size:11px;letter-spacing:3px;color:var(--org);font-weight:700;min-height:18px;font-family:monospace}
 #result{display:none;margin-top:18px}
-.dossier{background:linear-gradient(180deg,#101015,#0a0a0d);border:1px solid #26262e;clip-path:polygon(18px 0,100% 0,100% calc(100% - 18px),calc(100% - 18px) 100%,0 100%,0 18px);overflow:hidden}
-.dbanner{height:150px;position:relative;overflow:hidden}
-.dbanner img{width:100%;height:100%;object-fit:cover;object-position:center 20%}
-.dbanner::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(7,7,8,.25),rgba(7,7,8,.88) 85%)}
-.dlevel{position:absolute;right:14px;bottom:10px;z-index:2;background:rgba(0,0,0,.72);border:1px solid var(--org);padding:8px 14px;clip-path:polygon(8px 0,100% 0,calc(100% - 8px) 100%,0 100%);text-align:center}
-.dlevel b{display:block;font-size:22px;color:var(--org)}
-.dlevel span{font-size:8px;letter-spacing:3px;color:var(--dim)}
-.dident{padding:16px 18px 6px;display:flex;align-items:center;gap:12px}
-.davatar{width:64px;height:64px;flex-shrink:0;background:linear-gradient(135deg,#1a1a20,#0c0c0f);border:1px solid #33333c;display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:900;color:var(--org);clip-path:polygon(12px 0,100% 0,100% calc(100% - 12px),calc(100% - 12px) 100%,0 100%,0 12px)}
-.dname{flex:1;min-width:0}
-.dname h2{font-size:22px;font-weight:900;letter-spacing:.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.dname .duid{font-family:monospace;font-size:11px;color:var(--dim);letter-spacing:1px;margin-top:3px}
-.chips{display:flex;gap:8px;padding:12px 18px;flex-wrap:wrap}
-.chip{font-size:10px;font-weight:800;letter-spacing:2px;padding:7px 12px;background:#141419;border:1px solid #2c2c35;color:#c9c9d4;clip-path:polygon(7px 0,100% 0,calc(100% - 7px) 100%,0 100%)}
-.chip.o{border-color:rgba(255,107,26,.55);color:var(--org)}
-.chip.c{border-color:rgba(0,229,255,.4);color:var(--cyn)}
-.rdeck{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:4px 18px 6px}
-.rcard{background:#0e0e12;border:1px solid #23232b;padding:14px 12px;clip-path:polygon(10px 0,100% 0,100% calc(100% - 10px),calc(100% - 10px) 100%,0 100%,0 10px);position:relative}
-.rcard::before{content:'';position:absolute;top:0;left:10px;right:0;height:2px}
-.rcard.br::before{background:var(--org)}
-.rcard.cs::before{background:var(--cyn)}
-.rcard .rl{font-size:9px;letter-spacing:3px;color:var(--dim);font-weight:800}
-.rcard .rn{font-size:19px;font-weight:900;margin:8px 0 2px;letter-spacing:.5px}
-.rcard.br .rn{color:#ffb37a}.rcard.cs .rn{color:#8ff2ff}
-.rcard .rp{font-family:monospace;font-size:11px;color:var(--dim)}
-.pbar{height:5px;background:#191920;margin-top:10px;clip-path:polygon(3px 0,100% 0,calc(100% - 3px) 100%,0 100%)}
-.pbar i{display:block;height:100%;background:linear-gradient(90deg,#7a3a10,var(--org));width:0;transition:width 1.2s ease}
-.rcard.cs .pbar i{background:linear-gradient(90deg,#0a5a66,var(--cyn))}
+.dossier{background:linear-gradient(180deg,#111116,#0a0a0d);border:1px solid #2a2a33;clip-path:polygon(18px 0,100% 0,100% calc(100% - 18px),calc(100% - 18px) 100%,0 100%,0 18px);overflow:hidden}
+.dossier .dhead{padding:20px 20px 16px;border-bottom:2px solid var(--org);display:flex;align-items:center;gap:14px;background:linear-gradient(90deg,rgba(255,107,26,.08),transparent)}
+.davatar{width:58px;height:58px;flex-shrink:0;background:#16161c;border:1px solid #3a3a44;display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:900;color:var(--org);clip-path:polygon(10px 0,100% 0,100% calc(100% - 10px),calc(100% - 10px) 100%,0 100%,0 10px)}
+.dtitle{flex:1;min-width:0}
+.dtitle h2{font-size:21px;font-weight:900;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dtitle .du{font-family:monospace;font-size:11px;color:var(--dim);letter-spacing:1px;margin-top:4px}
+.dlvl{text-align:center;flex-shrink:0}
+.dlvl b{display:block;font-size:34px;font-weight:900;color:var(--org);line-height:1}
+.dlvl span{font-size:8px;letter-spacing:3px;color:var(--dim);font-weight:800}
+.sect{font-size:9px;letter-spacing:4px;color:var(--org);font-weight:800;padding:18px 20px 2px}
+.rows{padding:4px 20px}
+.row{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid #17171d}
+.row:last-child{border-bottom:none}
+.row .k{font-size:10px;letter-spacing:2px;color:var(--dim);font-weight:700;flex-shrink:0}
+.row .v{font-size:15px;font-weight:800;text-align:right;word-break:break-word}
+.row .v.o{color:var(--org)}.row .v.c{color:var(--cyn)}
+.rankrow{padding:12px 0;border-bottom:1px solid #17171d}
+.rankrow:last-child{border-bottom:none}
+.rankrow .rtop{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.rankrow .rk{font-size:10px;letter-spacing:2px;color:var(--dim);font-weight:700}
+.rankrow .rvv{font-size:17px;font-weight:900}
+.rankrow.br .rvv{color:#ffb37a}.rankrow.cs .rvv{color:#8ff2ff}
+.rankrow .rpts{font-family:monospace;font-size:11px;color:var(--dim);margin-top:6px;letter-spacing:1px}
+.pbar{height:6px;background:#18181f;margin-top:8px;clip-path:polygon(4px 0,100% 0,calc(100% - 4px) 100%,0 100%)}
+.pbar i{display:block;height:100%;width:0;transition:width 1.2s ease}
+.rankrow.br .pbar i{background:linear-gradient(90deg,#7a3a10,var(--org))}
+.rankrow.cs .pbar i{background:linear-gradient(90deg,#0a5a66,var(--cyn))}
 .pnext{font-size:9px;letter-spacing:1px;color:#5c5c66;margin-top:6px;font-family:monospace}
-.sgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding:12px 18px 6px}
-.stat{background:#0e0e12;border:1px solid #22222a;padding:14px 8px;text-align:center;clip-path:polygon(8px 0,100% 0,100% calc(100% - 8px),calc(100% - 8px) 100%,0 100%,0 8px);min-width:0}
-.stat .v{font-size:19px;font-weight:900;font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.stat .v.o{color:var(--org)}.stat .v.c{color:var(--cyn)}
-.stat .l{font-size:8px;letter-spacing:2px;color:var(--dim);margin-top:6px;font-weight:700}
-.clanrow{display:flex;align-items:center;gap:12px;margin:12px 18px 0;padding:13px 15px;background:linear-gradient(90deg,rgba(255,107,26,.07),transparent);border-left:3px solid var(--org)}
-.clanrow .cn{font-weight:800;font-size:14px;word-break:break-word}
-.clanrow .cm{font-size:10px;color:var(--dim);margin-top:2px;letter-spacing:1px}
-.dmeta{display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px;padding:14px 18px 18px;font-size:10px;letter-spacing:1px;color:#5c5c66;font-family:monospace}
+.dfoot{padding:16px 20px 20px}
 #error{display:none;margin-top:18px;padding:20px;text-align:center;background:rgba(255,60,60,.06);border:1px solid rgba(255,60,60,.35);font-size:13px;color:#ff9d9d;clip-path:polygon(12px 0,100% 0,100% calc(100% - 12px),calc(100% - 12px) 100%,0 100%,0 12px)}
 .ftr{text-align:center;margin-top:30px;font-size:9px;letter-spacing:4px;color:#3c3c46}
 .ftr b{color:var(--org)}
-@media(max-width:380px){.hdr h1{font-size:32px}#uid{font-size:17px}.rcard .rn{font-size:16px}.stat .v{font-size:16px}.dname h2{font-size:19px}}
+@media(max-width:380px){.hdr h1{font-size:32px}#uid{font-size:17px}.dtitle h2{font-size:18px}.dlvl b{font-size:28px}.row .v{font-size:13px}}
 </style>
 </head>
 <body>
@@ -97,29 +88,50 @@ body::after{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;back
 <div id="error"></div>
 <div id="result">
 <div class="dossier">
-<div class="dbanner"><img src="/soldier.jpg" alt=""><div class="dlevel"><b id="dlevel">--</b><span>LEVEL</span></div></div>
-<div class="dident"><div class="davatar" id="davatar">?</div><div class="dname"><h2 id="dname">—</h2><div class="duid" id="duid">UID // —</div></div></div>
-<div class="chips"><span class="chip o" id="cregion">—</span><span class="chip c" id="cserver">—</span><span class="chip" id="cprime">—</span></div>
-<div class="rdeck">
-<div class="rcard br"><div class="rl">BATTLE ROYALE</div><div class="rv rn" id="brrank">—</div><div class="rp"><span id="brpts">0</span> PTS</div><div class="pbar"><i id="brbar"></i></div><div class="pnext" id="brnext">—</div></div>
-<div class="rcard cs"><div class="rl">CLASH SQUAD</div><div class="rv rn" id="csrank">—</div><div class="rp"><span id="csstars">0</span> STARS</div><div class="pbar"><i id="csbar"></i></div><div class="pnext" id="csnext">—</div></div>
+<div class="dhead">
+<div class="davatar" id="davatar">?</div>
+<div class="dtitle"><h2 id="dname">—</h2><div class="du" id="duid">UID // —</div></div>
+<div class="dlvl"><b id="dlevel">--</b><span>LEVEL</span></div>
 </div>
-<div class="sgrid">
-<div class="stat"><div class="v o" id="slikes">0</div><div class="l">LIKES</div></div>
-<div class="stat"><div class="v" id="scredit">0</div><div class="l">CREDIT</div></div>
-<div class="stat"><div class="v c" id="sdiamond">0</div><div class="l">DIAMONDS</div></div>
-<div class="stat"><div class="v" id="sbadges">0</div><div class="l">BADGES</div></div>
-<div class="stat"><div class="v o" id="sgender">—</div><div class="l">GENDER</div></div>
-<div class="stat"><div class="v c" id="slang">—</div><div class="l">LANG</div></div>
+<div class="sect">PROFILE</div>
+<div class="rows">
+<div class="row"><span class="k">REGION</span><span class="v o" id="r_region">—</span></div>
+<div class="row"><span class="k">SERVER</span><span class="v c" id="r_server">—</span></div>
+<div class="row"><span class="k">PRIME STATUS</span><span class="v" id="r_prime">—</span></div>
+<div class="row"><span class="k">ACCOUNT REGISTERED</span><span class="v o" id="r_reg">—</span></div>
+<div class="row"><span class="k">LAST ACTIVE</span><span class="v" id="r_active">—</span></div>
 </div>
-<div class="clanrow"><div><div class="cn" id="clanname">NO CLAN</div><div class="cm" id="clanmeta">—</div></div></div>
-<div class="dmeta"><span id="mcreated">—</span><span id="mlogin">—</span></div>
+<div class="sect">RANKS</div>
+<div class="rows">
+<div class="rankrow br">
+<div class="rtop"><span class="rk">BATTLE ROYALE</span><span class="rvv" id="r_br">—</span></div>
+<div class="rpts"><span id="r_brpts">0</span> PTS</div>
+<div class="pbar"><i id="r_brbar"></i></div>
+<div class="pnext" id="r_brnext">—</div>
+</div>
+<div class="rankrow cs">
+<div class="rtop"><span class="rk">CLASH SQUAD</span><span class="rvv" id="r_cs">—</span></div>
+<div class="rpts"><span id="r_cspts">0</span> STARS</div>
+<div class="pbar"><i id="r_csbar"></i></div>
+<div class="pnext" id="r_csnext">—</div>
 </div>
 </div>
-<div class="ftr">SHADOW <b>//</b> FF STATS v2.0</div>
+<div class="sect">STATISTICS</div>
+<div class="rows">
+<div class="row"><span class="k">LIKES</span><span class="v o" id="r_likes">—</span></div>
+<div class="row"><span class="k">CREDIT SCORE</span><span class="v" id="r_credit">—</span></div>
+<div class="row"><span class="k">DIAMONDS SPENT</span><span class="v c" id="r_dia">—</span></div>
+<div class="row"><span class="k">BADGES</span><span class="v" id="r_badges">—</span></div>
+<div class="row"><span class="k">GENDER</span><span class="v" id="r_gender">—</span></div>
+<div class="row"><span class="k">CLAN</span><span class="v o" id="r_clan">—</span></div>
+</div>
+<div class="dfoot"></div>
+</div>
+</div>
+<div class="ftr">SHADOW <b>//</b> FF STATS v2.1</div>
 </div>
 <script>
-function brRank(p){p=+p||0;
+function brRank(p){p=+p||0};
 if(p<1300)return{n:'BRONZE',nx:'SILVER I',a:0,b:1300};
 if(p<1400)return{n:'SILVER I',nx:'SILVER II',a:1300,b:1400};
 if(p<1500)return{n:'SILVER II',nx:'SILVER III',a:1400,b:1500};
@@ -148,7 +160,7 @@ if(p<7999)return{n:'MASTER',nx:'ELITE MASTER',a:7099,b:7999};
 if(p<8999)return{n:'ELITE MASTER',nx:'GRANDMASTER',a:7999,b:8999};
 if(p<9999)return{n:'ELITE MASTER',nx:'GRANDMASTER',a:8999,b:9999};
 return{n:'GRANDMASTER',nx:'MAX',a:9999,b:9999};}
-function csRank(s){s=+s||0;
+function csRank(s){s=+s||0};
 if(s<=3)return{n:'BRONZE 1',st:s,of:3};if(s<=6)return{n:'BRONZE 2',st:s-3,of:3};if(s<=9)return{n:'BRONZE 3',st:s-6,of:3};
 if(s<=13)return{n:'SILVER 1',st:s-9,of:4};if(s<=17)return{n:'SILVER 2',st:s-13,of:4};if(s<=21)return{n:'SILVER 3',st:s-17,of:4};
 if(s<=25)return{n:'GOLD 1',st:s-21,of:4};if(s<=29)return{n:'GOLD 2',st:s-25,of:4};if(s<=33)return{n:'GOLD 3',st:s-29,of:4};if(s<=37)return{n:'GOLD 4',st:s-33,of:4};
@@ -156,40 +168,38 @@ if(s<=42)return{n:'PLATINUM 1',st:s-37,of:5};if(s<=47)return{n:'PLATINUM 2',st:s
 if(s<=67)return{n:'DIAMOND 1',st:s-62,of:5};if(s<=72)return{n:'DIAMOND 2',st:s-67,of:5};if(s<=77)return{n:'DIAMOND 3',st:s-72,of:5};if(s<=82)return{n:'DIAMOND 4',st:s-77,of:5};if(s<=87)return{n:'DIAMOND 5',st:s-82,of:5};
 if(s<=112)return{n:'HEROIC',st:s-87,of:25};if(s<=136)return{n:'ELITE HEROIC',st:s-87,of:49};if(s<=186)return{n:'MASTER',st:s-87,of:99};if(s<=286)return{n:'ELITE MASTER',st:s-87,of:199};
 return{n:'GRANDMASTER',st:Math.min(s-287,99),of:100};}
-function countUp(el,to,dur){dur=dur||1100;var t0=performance.now();(function f(t){var p=Math.min(1,(t-t0)/dur),v=Math.floor(to*(1-Math.pow(1-p,3)));el.textContent=v.toLocaleString();if(p<1)requestAnimationFrame(f);})(t0);}
+function num(el,to){var t0=performance.now(),d=1100;(function f(t){var p=Math.min(1,(t-t0)/d);el.textContent=Math.floor(to*(1-Math.pow(1-p,3))).toLocaleString();if(p<1)requestAnimationFrame(f);})(t0);}
 function fmtD(ts){if(!ts)return'--';var d=new Date(ts*1000);return d.toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'}).toUpperCase();}
+function S(id,v){document.getElementById(id).textContent=v;}
 var uidEl=document.getElementById('uid'),btn=document.getElementById('scanbtn');
 var scanner=document.getElementById('scanner'),smsg=document.getElementById('scanmsg');
 var result=document.getElementById('result'),err=document.getElementById('error');
 var SRV=['PK','SG','IND','BD','BR','VN','TH','ME','TW','US','ID','RU'];
-function set(id,v){document.getElementById(id).textContent=v;}
 async function go(){var uid=uidEl.value.trim();err.style.display='none';result.style.display='none';
 if(!/^\d{5,12}$/.test(uid)){err.style.display='block';err.textContent='INVALID UID // NUMBERS ONLY';return;}
 scanner.style.display='block';var i=0;var cy=setInterval(function(){smsg.textContent='SCANNING '+SRV[i%SRV.length]+' SECTOR…';i++;},240);
 try{var r=await fetch('/api/player?uid='+uid);clearInterval(cy);var d=await r.json();scanner.style.display='none';
 if(!d.success){err.style.display='block';err.textContent=d.error==='NOT_FOUND'?'TARGET NOT FOUND ON ANY SERVER':'SIGNAL ERROR // RETRY';return;}
-set('dlevel',d.level);set('dname',d.nickname);set('duid','UID // '+d.uid);
-    
-    set('davatar',(d.nickname||'?').trim().charAt(0).toUpperCase());
-set('cregion','REGION '+(d.region||'?'));set('cserver',d.server.toUpperCase()+' SRV');
-set('cprime',d.prime_level>0?('PRIME LV'+d.prime_level):'NO PRIME');
+S('davatar',(d.nickname||'?').trim().charAt(0).toUpperCase());
+S('dname',d.nickname);S('duid','UID // '+d.uid);S('dlevel',d.level);
+S('r_region',d.region||'?');S('r_server',(d.server||'?').toUpperCase());
+S('r_prime',d.prime_level>0?('LEVEL '+d.prime_level):'NONE');
+S('r_reg',fmtD(d.created_at));S('r_active',fmtD(d.last_login));
 var br=brRank(d.br_points),cs=csRank(d.cs_points);
-set('brrank',br.n);set('brpts',(d.br_points||0).toLocaleString());
-set('brnext',br.nx==='MAX'?'MAXIMUM RANK':((br.b-d.br_points)+' PTS TO '+br.nx));
-document.getElementById('brbar').style.width=Math.min(100,Math.max(4,((d.br_points-br.a)/(br.b-br.a))*100))+'%';
-set('csrank',cs.n);set('csstars',(d.cs_points||0).toLocaleString());
-set('csnext',cs.of>0?(cs.st+' / '+cs.of+' STARS'):'MAXIMUM RANK');
-document.getElementById('csbar').style.width=(cs.of>0?Math.min(100,Math.max(4,(cs.st/cs.of)*100)):100)+'%';
-countUp(document.getElementById('slikes'),d.likes);
-set('scredit',d.credit_score||0);countUp(document.getElementById('sdiamond'),d.diamond_cost||0);
-countUp(document.getElementById('sbadges'),d.badge_count||0);
-set('sgender',(d.gender||'--'));set('slang',(d.language||'--'));
-if(d.clan_name){set('clanname',d.clan_name);set('clanmeta','LV'+d.clan_level+' // '+d.clan_members+'/'+d.clan_capacity+' OPERATIVES');}
-else{set('clanname','NO CLAN');set('clanmeta','--');}
-set('mcreated','DEPLOYED: '+fmtD(d.created_at));set('mlogin','LAST ACTIVE: '+fmtD(d.last_login));
+S('r_br',br.n);S('r_brpts',(d.br_points||0).toLocaleString());
+S('r_brnext',br.nx==='MAX'?'MAXIMUM RANK ACHIEVED':((br.b-d.br_points).toLocaleString()+' PTS TO '+br.nx));
+document.getElementById('r_brbar').style.width=Math.min(100,Math.max(4,((d.br_points-br.a)/(br.b-br.a))*100))+'%';
+S('r_cs',cs.n);S('r_cspts',(d.cs_points||0).toLocaleString());
+S('r_csnext',cs.of>0?(cs.st+' / '+cs.of+' STARS'):'MAXIMUM RANK ACHIEVED');
+document.getElementById('r_csbar').style.width=(cs.of>0?Math.min(100,Math.max(4,(cs.st/cs.of)*100)):100)+'%';
+num(document.getElementById('r_likes'),d.likes||0);
+S('r_credit',d.credit_score||0);num(document.getElementById('r_dia'),d.diamond_cost||0);
+num(document.getElementById('r_badges'),d.badge_count||0);
+S('r_gender',d.gender||'--');
+if(d.clan_name){S('r_clan',d.clan_name);}else{S('r_clan','NO CLAN');}
 result.style.display='block';result.scrollIntoView({behavior:'smooth',block:'nearest'});
 }catch(e){clearInterval(cy);scanner.style.display='none';err.style.display='block';err.textContent='SIGNAL ERROR // RETRY';}}
 btn.onclick=go;uidEl.addEventListener('keydown',function(e){if(e.key==='Enter')go();});
 </script>
-</body></html>
-
+</body>
+</html>
