@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, request, jsonify, render_template, send_file
 import urllib.request
 import urllib.error
 import json
@@ -7,11 +7,10 @@ import time
 app = Flask(__name__, template_folder="api/templates")
 
 WZ_API = "https://wzapi.vercel.app/get"
-# Auto server detect order — PK first (his audience), then others
 SERVERS = ["pk", "sg", "ind", "bd", "br", "vn", "th", "me", "tw", "us", "id", "ru", "cis", "na"]
 
 _cache = {}
-CACHE_TTL = 300  # 5 min
+CACHE_TTL = 300
 
 
 def wz_fetch(uid, server):
@@ -23,7 +22,6 @@ def wz_fetch(uid, server):
         with urllib.request.urlopen(req, timeout=18) as r:
             data = json.loads(r.read().decode())
         bi = data.get("basic_info") or {}
-        # valid player = has nickname
         if bi.get("nickname"):
             return data
         return None
@@ -32,9 +30,12 @@ def wz_fetch(uid, server):
 
 
 def normalize(data, detected_server):
-    bi = data.get("basic_info", {}) or {}
+    bi = data.get("basic_info", {})
     clan = data.get("clan_basic_info", {}) or {}
     social = data.get("social_info", {}) or {}
+    credit = data.get("credit_score_info") or {}
+    diamond = data.get("diamond_cost_res") or {}
+    prime = bi.get("prime_privilege_detail") or {}
     return {
         "success": True,
         "server": detected_server,
@@ -63,6 +64,9 @@ def normalize(data, detected_server):
         "banner_id": bi.get("banner_id", 0),
         "head_pic": bi.get("head_pic", 0),
         "badge_count": bi.get("badge_cnt", 0),
+        "credit_score": credit.get("credit_score", 0),
+        "diamond_cost": diamond.get("diamond_cost", 0),
+        "prime_level": prime.get("prime_level", 0),
     }
 
 
@@ -76,21 +80,23 @@ def player():
     uid = (request.args.get("uid") or "").strip()
     if not uid.isdigit() or len(uid) < 5 or len(uid) > 12:
         return jsonify({"success": False, "error": "INVALID_UID"}), 400
-
     now = time.time()
     if uid in _cache and now - _cache[uid]["ts"] < CACHE_TTL:
         d = dict(_cache[uid]["data"])
         d["cached"] = True
         return jsonify(d)
-
     for server in SERVERS:
         data = wz_fetch(uid, server)
         if data:
             out = normalize(data, server)
             _cache[uid] = {"ts": now, "data": out}
             return jsonify(out)
-
     return jsonify({"success": False, "error": "NOT_FOUND"}), 404
+
+
+@app.route("/soldier.jpg")
+def soldier_img():
+    return send_file("soldier.jpg", mimetype="image/jpeg")
 
 
 @app.route("/api/health")
